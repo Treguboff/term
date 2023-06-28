@@ -150,8 +150,7 @@ export var controller = {
         inactivityTime();
         let objClient = controller.getClientFromLocalStorage();
         try {
-            let objCart = model.getCart();
-            view.render_CartPage(objCart);
+            view.render_CartPage();
         }
         catch (err) {
             // логирование

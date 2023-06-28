@@ -791,7 +791,9 @@ export var view = {
 
     },
 
-    render_CartPage(obj) {
+    render_CartPage() {
+
+        let obj = view.getCart();
         let cartPage = document.querySelector('.cart_');
         cartPage.innerHTML = "";
         obj.forEach(function (item) {
@@ -800,9 +802,10 @@ export var view = {
             <div class="card-body p-4">
                 <div class="row d-flex justify-content-between align-items-center">
                    
-                <div class="col-2">
+                    <div class="col-2">
                         <img src="./img/shop/img_pilates.jpg" class="img-fluid rounded-3" alt="logo">
                     </div>
+
                     <div class="col-7">
                         <p class="lead fw-normal mb-2">${item.title}</p>                        
                     </div>
@@ -812,12 +815,44 @@ export var view = {
                     </div>
 
                     <div class="col-1 text-center">
-                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                        <a href="#!" class="text-danger btn_del"><i class="fas fa-trash fa-lg" id="${item.id}"></i></a>
                     </div>
+
                 </div>
             </div>
         </div>
         `;
-        })
+        });
+
+        let btns = document.querySelectorAll('.btn_del');
+        btns.forEach(item => {
+            item.addEventListener('click', function (event) {
+                // обновим состояние массива выбранных товаров
+                cart = view.getCart();
+                const res = cart.filter((el, index, arr) => {
+                    arr.push();
+                    return el.id != event.target.id
+                });
+                view.saveCart(res);
+                view.render_CartPage();
+            });
+        });
+
+        // итого
+        let label1 = document.getElementById('subtotal');
+        label1.innerHTML = "100";
+
+        // скидка
+        let label2 = document.getElementById('sales');
+        label2.innerHTML = "20";
+
+        // всего
+        let label3 = document.getElementById('total');
+        label3.innerHTML = "80";
+
+        // всего на кнопке Оплатить
+        let label4 = document.getElementById('btn_total');
+        label4.innerHTML = "80";
+
     },
 }

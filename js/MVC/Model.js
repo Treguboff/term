@@ -2288,12 +2288,6 @@ export var model = {
 
     },
 
-    getCart() {
-        return localStorage.getItem("cart")
-            ? JSON.parse(localStorage.getItem("cart"))
-            : [];
-    },
-
     // QR-код процесс
     async get_QR_pay_link(data) {
         if (isTest) {
