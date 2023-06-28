@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" charset="utf-8" href="./components/vanillaSelectBox/vanillaSelectBox.css">
     -->
 
-    <!-- подключаем CSS-селекта -->
-    <link rel="stylesheet" href="./css/itc-custom-select.css">
-    <!-- подключаем JS-селекта -->
-    <script src="./js/etc/itc-custom-select.js"></script>
 
     <title>APP</title>
 </head>
@@ -56,42 +52,792 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <!-- Изначально не активна ни одна опция -->
-                    <div class="itc-select" id="select-1">
-                        <!-- Кнопка для открытия выпадающего списка -->
-                        <button type="button" class="itc-select__toggle" name="toggle__group" id="toggle__group"
-                            value="-1" data-select="toggle" data-index="-1" disabled>--Выберите направление--</button>
-                        <!-- Выпадающий список -->
-                        <div class="itc-select__dropdown">
-                            <ul class="itc-select__options" id="option__group"></ul>
+            <div class="container pt-3">
+
+                <div class="row align-items-lg-baseline">
+
+                    <div class="col-2">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">0 Items</span>
+                            </div>
+                            <select name="pagination_select" id="pagination_select"
+                                class="form-control form-control-sm">
+                                <option value=12>12</option>
+                                <option value=24>24</option>
+                                <option value=48>48</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <!-- Изначально не активна ни одна опция -->
-                    <div class="itc-select" id="select-2">
-                        <!-- Кнопка для открытия выпадающего списка -->
-                        <button type="button" class="itc-select__toggle" name="toggle__event" id="toggle__event"
-                            value="-1" data-select="toggle" data-index="-1" disabled>--Выберите занятие--</button>
-                        <!-- Выпадающий список -->
-                        <div class="itc-select__dropdown">
-                            <ul class="itc-select__options" id="option__event"></ul>
-                        </div>
+
+                    <div class="col-3">
+                        <select id="group" class="form-control form-control-sm">
+                            <option value="all">--Выберите направление--</option>
+                            <option value="Детский фитнес">Детский фитнес</option>
+                            <option value="Водные программы">Водные программы</option>
+                        </select>
                     </div>
+
+                    <div class="col-3">
+                        <select id="event" class="form-control form-control-sm">
+                            <option value="all">--Выберите занятие--</option>
+                            <option value="">Бокс</option>
+                            <option value="">Кросстренинг</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <select class="form-control form-control-sm">
+                            <option value="">--Выберите цель--</option>
+                            <option value="">Ловкость</option>
+                            <option value="">Выносливость</option>
+                        </select>
+                    </div>
+
                 </div>
+
             </div>
+
 
         </div>
 
-        <div class="paper container mt-5 mb-5 container2">
+        <div class="paper container mt-3 container2">
 
             <div id="indic"></div>
 
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Товары -->
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="products-container">
+
             </div>
 
+            <!--
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa-solid fa-stopwatch-20"></i>
+                                    <span class="ml-1">_55 минут</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa-solid fa-stopwatch-20"></i>
+                                    <span class="ml-1">_55 минут</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <span class="ml-1">Новинка</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="d-flex justify-content-between position-absolute w-100">
+                            <div class="label-new">
+                                <span class="text-white bg-success small d-flex align-items-center px-2 py-1">
+                                    <i class="fa-solid fa-stopwatch-20"></i>
+                                    <span class="ml-1">_55 минут</span>
+                                </span>
+                            </div>
+                            <div class="label-sale">
+                                <span class="text-white bg-primary small d-flex align-items-center px-2 py-1">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    <span class="ml-1">Скидка</span>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                        </a>
+                        <div class="card-body px-2 pb-2 pt-1">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="h4 text-primary">₽ 5.000</p>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left"
+                                        title="Compare">
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-warning d-flex align-items-center mb-2">
+                                <span style="color:black">Интенсивность: </span>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </p>
+                            <p class="mb-0">
+                                <strong>
+                                    <a href="#" class="text-secondary">BOXING</a>
+                                </strong>
+                            </p>
+                            <p class="mb-1">
+                                <small>
+                                    <a href="#" class="text-secondary">Цель: Улучшить физическую форму,
+                                        Выносливость</a>
+                                </small>
+                            </p>
+                            <div class="d-flex mb-3 justify-content-between">
+                                <div>
+                                    <p class="mb-0 small"><b>Направление: </b> Групповые программы
+                                    </p>
+                                    <p class="mb-0 small"><b>Возраст: </b> Взрослые 18-40, Взрослые 41-54</p>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="col px-0">
+                                    <button class="btn btn-outline-primary btn-block">
+                                        Купить
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="#" class="btn btn-outline-success" data-toggle="tooltip"
+                                        data-placement="left" title="Add to Wishlist">
+                                        Записаться
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+            </div>
+            -->
+
+        </div>
+
+        <div class="container  mt-3">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <!--
+                            <li class="page-item" id="minus"><a class="page-link" href="#">Назад</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" id="plus"><a class="page-link" href="#">Вперед</a></li>
+                            -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -115,8 +861,8 @@
                     <a href="cart.html" class="position-relative circle">
                         <!--Home Icon -->
                         <span class="basket"></span>
-                        <span class="position-absolute top-0 start-100 badge rounded-pill bg-danger fs-3">
-                            8
+                        <span class="position-absolute top-0 start-100 badge rounded-pill bg-danger fs-3"
+                            id="cart-items">
                             <span class="visually-hidden">unread messages</span>
                         </span>
                     </a>
@@ -126,6 +872,7 @@
     </footer>
 
     <script type="module" src="./js/logic/catalog.js"></script>
+
     <script src="./components/bootstrap-5.0.2-dist/js/bootstrap.bundle.js"></script>
     <script src="./js/app.js"></script>
 
@@ -174,6 +921,40 @@
                 <div class="modal-footer">
                     <button id="FormViewMsgClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
                         style="font-size: 2rem;">Закрыть</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="LogoutDialog" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content" style="background-color: rgb(114, 8, 8);">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal2Label" style="color: white;">info</h5>
+                </div>
+                <div class="modal-body">
+
+                    <p class="text-center" style="font-size: 50px; color: white;" id="leftTime"></p>
+
+                    <div class="container mt-4 mb-4">
+                        <div class="col-12 text-center">
+                            <p style="font-size: 40px; color: white;">Хотите продолжить?</p>
+                            <p style="font-size: 30px; color: white;">Ваша сессия скоро будет завершена.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button id="LogoutClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
+                        style="font-size: 2rem;">Выйти</button>
+
+                    <button id="LogoutNext" class="btn btn-outline-success" data-bs-dismiss="modal"
+                        style="font-size: 2rem;">Продолжить</button>
+
                 </div>
             </div>
         </div>

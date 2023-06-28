@@ -121,128 +121,12 @@ export var controller = {
 
     // SHOP
     async catalog_init() {
-
-        // https://codepen.io/netsi1964/pen/eYpBowK
-        // https://codepen.io/taboo09/pen/rNrrqJ
-
-
-        // test
-        let data = {
-            "client": {
-                "id": "fe2698e3-3e90-11e9-ada5-0050568b5c63",
-                "name": "Абалухова Елизавета Дмитриевна",
-                "birthday": "03.11.1997",
-                "phone": "79161556828",
-                "mail": "ladybird2016@gmail.com"
-            }
-        }
-        let user = JSON.stringify(data.client);
-        localStorage.setItem('User', user);
-        // test
-
+        // обработчик ожидания
+        inactivityTime();
         let objClient = controller.getClientFromLocalStorage();
-
         try {
-
-            // получить данные из 1С
-            let obj = await model.getCatalog();
-            let uniqueGroups = Array.from(new Set(obj.map(el => el.group)));
-            let uniqueEvents = Array.from(new Set(obj.map(el => el.service.split(/[:;,\r\n]/)[0])));
-
-            // view catalog
-            view.render_CatalogPage_Catalog(obj);
-
-
-            //https://itchief.ru/javascript/custom-select#why
-
-            let html3 = ''
-            html3 += `<li class="itc-select__option itc-select__option_selected" data-select="option" data-value="-1" data-index="-1">--Выберите направление--</li>`;
-
-            uniqueGroups.forEach((index, key) => {
-                html3 += `<li class="itc-select__option" data-select="option" data-value="${key}" data-index="${index}">${uniqueGroups[key]}</li>`;
-            });
-
-            document.querySelector('.itc-select__options').innerHTML = html3;
-
-            new ItcCustomSelect('#select-1');
-
-            //document.querySelector('.itc-select__toggle').disabled = false;
-            document.getElementById('toggle__group').disabled = false;
-
-
-            //подключить тек обработчики выбора для фильтров
-            document.querySelector('#select-1').addEventListener('itc.select.change', (e) => {
-
-                const btn = e.target.querySelector('.itc-select__toggle');
-                // выбранное значение
-                console.log(`Выбранное значение: ${btn.value}`);
-                // индекс выбранной опции
-                console.log(`Индекс выбранной опции: ${btn.dataset.index}`);
-                // выбранный текст опции
-                const selected = e.target.querySelector('.itc-select__option_selected');
-                const text = selected ? selected.textContent : '';
-                console.log(`Выбранный текст опции: ${text}`);
-
-                if (btn.dataset.index === -1) {
-                    //отключаем фильтр направлений
-
-                }
-                else {
-                    // включаем фильтр направлений
-
-                }
-
-                let cat = obj.filter(el => btn.dataset.index.includes(el.group));
-
-                // view catalog
-                view.render_CatalogPage_Catalog(cat);
-
-            });
-
-
-
-            let html4 = ''
-            html4 += `<li class="itc-select__option itc-select__option_selected" data-select="option" data-value="-1" data-index="-1">--Выберите занятие--</li>`;
-
-            uniqueEvents.forEach((index, key) => {
-                html4 += `<li class="itc-select__option" data-select="option" data-value="${key}" data-index="${index}">${uniqueEvents[key]}</li>`;
-            });
-
-            document.querySelector('#option__event').innerHTML = html4;
-
-            new ItcCustomSelect('#select-2');
-
-            //document.querySelector('.itc-select__toggle').disabled = false;
-            document.getElementById('toggle__event').disabled = false;
-
-            //подключить тек обработчики выбора для фильтров
-            document.querySelector('#select-2').addEventListener('itc.select.change', (e) => {
-                const btn = e.target.querySelector('.itc-select__toggle');
-                // выбранное значение
-                console.log(`Выбранное значение: ${btn.value}`);
-                // индекс выбранной опции
-                console.log(`Индекс выбранной опции: ${btn.dataset.index}`);
-                // выбранный текст опции
-                const selected = e.target.querySelector('.itc-select__option_selected');
-                const text = selected ? selected.textContent : '';
-                console.log(`Выбранный текст опции: ${text}`);
-
-                if (btn.dataset.index === -1) {
-                    //отключаем фильтр занятий
-
-                }
-                else {
-                    // включаем фильтр занятий
-
-                }
-
-                let cat2 = obj.filter(el2 => btn.dataset.index.includes(el2.service.split(/[:;,\r\n]/)));
-
-                // view catalog
-                view.render_CatalogPage_Catalog(cat2);
-
-            });
-
+            let objCatalog = await model.getCatalog();
+            view.render_CatalogPage(objCatalog);
         }
         catch (err) {
             // логирование
@@ -262,13 +146,12 @@ export var controller = {
 
     // CART Корзина товаров для финальной оплаты
     async cart_init() {
+        // обработчик ожидания
+        inactivityTime();
         let objClient = controller.getClientFromLocalStorage();
         try {
-            // получить данные из 1С
-            let objCart = await model.getCart();
-            // отображаем на странице
-            view.render_CartPage_Cart(objCart);
-
+            let objCart = model.getCart();
+            view.render_CartPage(objCart);
         }
         catch (err) {
             // логирование
@@ -278,11 +161,11 @@ export var controller = {
                 'userId': objClient.id,
                 'flagErr': true,
                 'amount': 0,
-                'msg1': 'Ошибка получения данных корзины товаров',
+                'msg1': 'Ошибка получения данных корзины магазина',
                 'msg2': err.name + ": " + err.message
             };
             // логирование
-            let form = view.render_Msg(false, 'Ошибка получения данных корзины товаров', err, _err);
+            let form = view.render_Msg(false, 'Ошибка получения данных корзины магазина', err, _err);
         }
     },
 

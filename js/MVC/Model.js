@@ -2288,41 +2288,10 @@ export var model = {
 
     },
 
-    async getCart() {
-
-        if (isTest) {
-            let promise = new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    let obj = [
-                        {
-                            "id": "1",
-                            "name": "Ноутбук Lenovo",
-                            "count": 2,
-                            "price": "18000",
-                            "img": "img/cars/notebook_lenovo.jpg"
-                        },
-                        {
-                            "id": "2",
-                            "name": "Фотокамера Nikon",
-                            "count": 1,
-                            "price": "25000",
-                            "img": "img/cars/camera_nikon.jpg"
-                        },
-
-                    ];
-                    resolve(obj);
-                }, 10);
-            })
-            return await promise;
-        }
-        else {
-            // в разработке
-            let obj = {
-                "cart_list": []
-            };
-            return obj;
-        }
-
+    getCart() {
+        return localStorage.getItem("cart")
+            ? JSON.parse(localStorage.getItem("cart"))
+            : [];
     },
 
     // QR-код процесс

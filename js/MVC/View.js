@@ -1,11 +1,12 @@
 import { controller } from "../MVC/Controller.js";
+import { kineticscroll } from '../etc/kineticscroll.js';
 
-var arr_cource = [];
-var arr_event = [];
-var arr_trainer = [];
-
+// время закрытия окон сообщений / результатов
 var windowTimer;
 var secs = 10;
+
+//cart
+var cart = [];
 
 export var view = {
 
@@ -541,283 +542,282 @@ export var view = {
         return data_for_pay;
     },
 
-    render_CatalogPage_Catalog(obj) {
+    render_CatalogPage(obj) {
 
-        let catalog = document.querySelector('.paper > .row');
-        catalog.innerHTML = '';
+        cart = this.getCart();
+        this.setCartValues(cart);
 
-        if (obj.length > 0) {
-            let str = '';
+        // pagination & filters
+        let currentPage = 0;
+        let page_size = 0;
+        let curr_group = '';
 
-            obj.forEach(function (item) {
+        let products = obj;
 
-                // оформление карточки bootstrap
-                // https://codepen.io/sharomet/pen/JMqpdK
+        page_size = this.getSelectValue('pagination_select');
+        curr_group = this.getSelectValue('group');
 
+        let pages = '';
+        let total = 0;
 
-                // нахождение нормального наименования занятия !
-                let _nameArr = item.service.split(/[:;,\r\n]/);
+        if (curr_group === 'all') {
+            pages = this.paginate(products, page_size);
+            total = products.length;
+        }
+        else {
+            let arr = products.filter(el => el.group === curr_group);
+            pages = this.paginate(arr, page_size);
+            total = arr.length;
+        }
 
-                str += `<div class="col">
-                <div class="card h-100 border-info" id=${item.serviceId}>
-        
-                    <img class="card-img-top" src="./img/shop/test.webp" alt="logo">
-        
-                    <div class="card-body">
-                        <h5 class="card-title">${_nameArr[0]}</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"
-                                    style="font-size:20px;"></i> ${item.type}</li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-user"
-                                    style="font-size:20px;"></i> ${item.group}</li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"
-                                    style="font-size:20px;"></i> ${_nameArr[2]}</li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-clock-o"
-                                    style="font-size:20px;"></i> ${_nameArr[3]}</li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-rub"
-                                    style="font-size:20px;"></i> ${item.price}</li>
-                        </ul>
-                    </div>
-        
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-outline-warning">Купить</button>
-                        <button type="button" class="btn btn-outline-primary">
-                            В корзину
-                            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                        </button>
-                    </div>
-        
-                </div>
-                </div>`;
+        this.renderPagination(pages, currentPage, total);
+        this.renderProducts(pages[currentPage], total);
+        this._touch();
 
-            });
+        // добавить события фильтров
+        const sel = document.getElementById('pagination_select');
+        sel.onchange = () => {
+            page_size = this.getSelectValue('pagination_select');
+            this.render_CatalogPage(obj);
+        }
 
-            catalog.innerHTML = str;
-
-            let target = document.querySelector(".paper > .row");
-            controller.changeSizeKineticScroll(target);
-
+        const sel_group = document.getElementById('group');
+        sel_group.onchange = () => {
+            curr_group = this.getSelectValue('group');
+            this.render_CatalogPage(obj);
         }
 
     },
 
-    render_CartPage_Cart(obj) {
+    getSelectValue(iD) {
+        let sel = document.getElementById(iD);
+        return sel.options[sel.selectedIndex].value;
+    },
 
-        let cart = document.getElementById('cart');
+    paginate(arr, size) {
+        return arr.reduce((acc, val, i) => {
+            let idx = Math.floor(i / size)
+            let page = acc[idx] || (acc[idx] = [])
+            page.push(val)
+            return acc
+        }, [])
+    },
 
-        let template = '';
+    renderPagination(pages, currentPage, total) {
 
-        obj.forEach((item) => {
+        let len = pages.length;
 
-            //console.log(item)
+        let pag = document.querySelector('.pagination');
+        pag.innerHTML = `
+        <li class="page-item" id="minus"><a class="page-link" href="#">Назад</a></li>
+        <li class="page-item" id="minus"><a class="page-link" href="#">${currentPage + 1}</a></li>
+        <li class="page-item" id="minus"><a class="page-link" href="#"> из </a></li>
+        <li class="page-item" id="minus"><a class="page-link" href="#">${len}</a></li>
+        <li class="page-item" id="plus"><a class="page-link" href="#">Вперед</a></li>`;
 
-            let js_sum = item.count * item.price;
-            template += `
-
-            <tr class="cart-item js-cart-item" data-id=${item.id}>
-                <td>
-                    ${item.id}
-                </td>
-                <td>${item.name}</td>
-                <td>
-                    ${item.price}
-                </td>
-                <td>
-                    <span class="cart-item__btn-dec-count js-change-count" title="Уменьшить на 1"
-                        data-id=${item.id} data-delta="-1">
-                        <i class="fa-solid fa-minus"></i>
-                    </span>
-                    <span class="js-count">
-                    ${item.count}
-                    </span>
-                    <span class="cart-item__btn-inc-count js-change-count" title="Увеличить на 1"
-                        data-id=${item.id} data-delta="1">
-                        <i class="fa-solid fa-plus"></i>
-                    </span>
-                </td>
-                <td><span class="js-summa">${js_sum}</span> руб.</td>
-                <td>
-                    <span class="cart-item__btn-remove js-remove-from-cart" title="Удалить из корзины"
-                        data-id=${item.id}>
-                        <i class="fa-solid fa-trash"></i>
-                    </span>
-                </td>
-            </tr>`;
-
-        })
-
-        cart.innerHTML = template;
-
+        const minus = document.getElementById('minus');
+        minus.onclick = () => {
+            if (currentPage > 0) {
+                currentPage -= 1;
+                this.renderPagination(pages, currentPage, total);
+                this.renderProducts(pages[currentPage], total);
+                this._touch();
+            }
+        }
+        const plus = document.getElementById('plus');
+        plus.onclick = () => {
+            if (pages.length - 1 > currentPage) {
+                currentPage += 1;
+                this.renderPagination(pages, currentPage, total);
+                this.renderProducts(pages[currentPage], total);
+                this._touch();
+            }
+        }
 
     },
 
-    render_CatalogPage_filters(obj) {
+    renderProducts(pageArr, total) {
+        let productsContainer = document.querySelector('#products-container');
+        productsContainer.innerHTML = "";
 
-        // массив уникальных значений для фильтра по группам
-        let uniqueGroups = Array.from(new Set(obj.map(el => el.group)));
-        let str = '';
-        uniqueGroups.forEach((el, i) => {
-            str += `
-            <label class="form-check-label" for="cource${i}">
-                <input class='form-check-input' type="checkbox" id="cource${i}" value='${el}'
-                    name="cource" />
-                ${el}
-            </label>
-            `;
+        document.getElementById('basic-addon1').innerHTML = `${total} items`;
+
+        pageArr.forEach(function (item) {
+
+            const productHTML = `<div class="col-md-4 mb-3">
+                            <div class="card mb-4" data-id="${item.serviceId}">
+                                <a href="#">
+                                    <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
+                                </a>                                
+                                <div class="card-body text-center">
+                                    <h4 class="item-title">${item.service}</h4>
+                                    <p><small data-items-in-box class="text-muted">${item.group}</small></p>
+    
+                                    <div class="details-wrapper">
+    
+                                        <div class="price">
+                                            <div class="price__currency">${item.price} ₽</div>
+                                        </div>
+                                    </div>
+    
+                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">
+                                        + в корзину
+                                    </button>
+    
+                                </div>
+                            </div>
+                        </div>`;
+            productsContainer.insertAdjacentHTML('beforeend', productHTML);
         });
 
-        // массив уникальных значений для фильтра по занятиям
-        let uniqueEvents = Array.from(new Set(obj.map(el => el.service.split(/[:;,\r\n]/)[0])));
-        let str2 = '';
-        uniqueEvents.forEach((el, i) => {
-            str2 += `
-            <label class="form-check-label" for="event${i}">
-                <input class='form-check-input' type="checkbox" id="event${i}" value='${el}'
-                    name="event" />
-                ${el}
-            </label>
-            `;
-        });
+        // добавляем опросы кнопки добавления в корзину
+        this.addEventsBtn();
+    },
 
-        let filters = document.querySelector('.chapter > .row');
-        filters.innerHTML = `
-        <div class="col-4">
-            <div class="multipleSelection form-select-lg mb-3" aria-label=".form-select-lg">
-                <div class="selectBox">
-                    <label style="color: aliceblue;">Выберите направление</label>
-                    <select style="padding: 5px;">
-                        <option id="label_cource"></option>
-                    </select>
-                    <div class="overSelect" id="cource"></div>
+    _touch() {
+        // touch
+        setTimeout(() => {
+            let target = document.querySelector(".paper > #products-container");
+            let box = parseInt(getComputedStyle(target.parentNode).height, 10);
+            let list = parseInt(getComputedStyle(target).height, 10);
+
+            //console.log(box)
+            //console.log(list)
+
+            let indic = document.getElementById('indic');
+            indic.style = 'transform: translateY(0px)';
+            target.style = 'transform: translateY(0px)';
+            if (list > box) {
+                kineticscroll(target, { indicator: 'indic', snap: true });
+            }
+        }, 500)
+    },
+
+    saveCart(cart) {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    },
+
+    getCart() {
+        return localStorage.getItem("cart")
+            ? JSON.parse(localStorage.getItem("cart"))
+            : [];
+    },
+
+    setCartValues(cart) {
+        const cartItems = document.querySelector("#cart-items");
+        let tempTotal = 0;
+        let itemsTotal = 0;
+        cart.map(item => {
+            tempTotal += item.price * 1;
+            itemsTotal += 1;
+        });
+        //cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+        cartItems.innerText = itemsTotal;
+    },
+
+    move_to_cart(pic_, cart_) {
+        let picture_pos = pic_.getBoundingClientRect();
+        let cart_pos = cart_.getBoundingClientRect();
+
+        let picture2 = pic_.cloneNode();
+
+        picture2.style.position = "fixed";
+        picture2.style.left = picture_pos['x'] + "px";
+        picture2.style.top = picture_pos['y'] + "px";
+        picture2.style.border = "none";
+        picture2.style.zIndex = 32767;
+
+        let start_x = picture_pos['x'] + 0.5 * picture_pos['width'];
+        let start_y = picture_pos['y'] + 0.5 * picture_pos['height'];
+
+        let delta_x = (cart_pos['x'] + 0.5 * cart_pos['width']) - start_x;
+        let delta_y = (cart_pos['y'] + 0.5 * cart_pos['height']) - start_y;
+
+        document.body.appendChild(picture2);
+        void picture2.offsetWidth;
+        picture2.style.transform = "translateX(" + delta_x + "px)";
+        picture2.style.transform += "translateY(" + delta_y + "px)";
+        picture2.style.transform += "scale(0.25)"; // уменьшаем до 25%
+        picture2.style.transition = "1s"; // всё происходит за 1 секунду
+
+        setTimeout(() => document.body.removeChild(picture2), 960);
+    },
+
+    viewCart(cart) {
+        const cartItems = document.querySelector("#cart-items");
+        cartItems.innerText = cart.length;
+    },
+
+    addEventsBtn() {
+
+        window.addEventListener('click', function (event) {
+
+            // Проверяем что клик был совершен по кнопке "Добавить в корзину"
+            if (event.target.hasAttribute('data-cart')) {
+
+                // Находим карточку с товаром, внутри котрой был совершен клик
+                const card = event.target.closest('.card');
+
+                // Собираем данные с этого товара и записываем их в единый объект productInfo
+                const productInfo = {
+                    id: card.dataset.id,
+                    imgSrc: card.querySelector('.card-img-top').getAttribute('src'),
+                    title: card.querySelector('.item-title').innerText,
+                    itemsInBox: card.querySelector('[data-items-in-box]').innerText,
+                    price: card.querySelector('.price__currency').innerText,
+                    counter: 1,
+                };
+
+                let prod = view.getCart();
+                let res = prod.filter(el => el.id === productInfo.id);
+
+                if (res.length === 0) {
+                    // добавим товар в корзину
+                    cart.push(productInfo);
+                    view.saveCart(cart);
+
+                    // animation to cart
+                    let pic1 = card.querySelector('.card-img-top');
+                    let cart1 = document.querySelector('.basket');
+                    view.move_to_cart(pic1, cart1);
+
+                    // пересчитаем корзину                    
+                    view.viewCart(cart);
+                }
+
+            }
+
+        })
+
+    },
+
+    render_CartPage(obj) {
+        let cartPage = document.querySelector('.cart_');
+        cartPage.innerHTML = "";
+        obj.forEach(function (item) {
+            cartPage.innerHTML += `
+        <div class="card rounded-3 mb-4">
+            <div class="card-body p-4">
+                <div class="row d-flex justify-content-between align-items-center">
+                   
+                <div class="col-2">
+                        <img src="./img/shop/img_pilates.jpg" class="img-fluid rounded-3" alt="logo">
+                    </div>
+                    <div class="col-7">
+                        <p class="lead fw-normal mb-2">${item.title}</p>                        
+                    </div>
+                    
+                    <div class="col-2">
+                        <h5 class="mb-0">${item.price}</h5>
+                    </div>
+
+                    <div class="col-1 text-center">
+                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                    </div>
                 </div>
-                <div class="form-check" id="form-check-cource">${str}</div>
             </div>
         </div>
-          
-        <div class="col-4">
-            <div class="multipleSelection form-select-lg mb-3" aria-label=".form-select-lg">
-                <div class="selectBox">
-                    <label style="color: aliceblue;">Выберите занятие</label>
-                    <select style="padding: 5px;">
-                        <option id="label_event"></option>
-                    </select>
-                    <div class="overSelect" id="event"></div>
-                </div>
-                <div class="form-check" id="form-check-event">${str2}</div>
-            </div>
-        </div>       
         `;
-
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains("overSelect")) {
-                // закрываем все поля фильтров
-                showCheckboxes('form-check-cource', 'hide');
-                showCheckboxes('form-check-event', 'hide');
-                //showCheckboxes('form-check-trainer', 'hide');
-                // открываем выбранный список
-                showCheckboxes('form-check-' + e.target.id, 'show');
-            }
-            else if (e.target.type === 'checkbox' || e.target.classList.contains("form-check-label")) {
-                if (e.target.type === 'checkbox') {
-                    getCheckedCheckBoxes(e.target.name, obj);
-                }
-            }
-            else {
-                // закрываем все поля фильтров
-                showCheckboxes('form-check-cource', 'hide');
-                showCheckboxes('form-check-event', 'hide');
-                //showCheckboxes('form-check-trainer', 'hide');
-            }
         })
-
-        function showCheckboxes(iD, method) {
-            let list = document.getElementById(iD);
-            if (method === 'show') {
-                list.style.display = "block";
-            }
-            else if (method === 'hide') {
-                list.style.display = "none";
-            }
-        }
-
-        function getCheckedCheckBoxes(part, obj) {
-
-            switch (part) {
-                case 'cource':
-                    arr_cource = [];
-                    break;
-
-                case 'event':
-                    arr_event = [];
-                    break;
-
-                case 'trainer':
-                    arr_trainer = [];
-                    break;
-
-                default:
-                    break;
-            }
-
-            let text = document.getElementById('label_' + part);
-            let str = '';
-            let checkboxes = document.getElementsByName(part);
-
-            for (let index = 0; index < checkboxes.length; index++) {
-                if (checkboxes[index].checked) {
-                    str += checkboxes[index].value + "; ";
-
-                    switch (part) {
-                        case 'cource':
-                            arr_cource.push(checkboxes[index].value); // положим в массив выбранный
-                            break;
-
-                        case 'event':
-                            arr_event.push(checkboxes[index].value); // положим в массив выбранный
-                            break;
-
-                        case 'trainer':
-                            arr_trainer.push(checkboxes[index].id); // положим в массив выбранный
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                }
-            }
-            text.innerHTML = str;
-
-            let nc = view.filteringCatalog(obj, arr_cource, arr_event);
-
-
-
-        }
-
     },
-
-    filteringCatalog(catalog, arr_cource, arr_event) {
-        let cat = []
-        if (arr_cource.length > 0) {
-            cat = catalog.filter(el => arr_cource.includes(el.group));
-        }
-        else {
-            cat = catalog.slice();
-        }
-        let cat2 = []
-        if (arr_event.length > 0) {
-            cat2 = cat.filter(el2 => arr_event.includes(el2.service.split(/[:;,\r\n]/)));
-        }
-        else {
-            cat2 = cat.slice();
-        }
-
-
-        console.log(cat2)
-
-        view.render_CatalogPage_filters(cat2);
-        view.render_CatalogPage_Catalog(cat2);
-
-    },
-
 }
