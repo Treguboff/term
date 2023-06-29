@@ -1,10 +1,10 @@
 export class QR {
-    
+
     // время закрытия окон сообщений / результатов
     #windowTimer
     #secs
 
-    constructor(user, arrData) {
+    constructor() {
         this.#windowTimer = '';
         this.#secs = 10;
     }
