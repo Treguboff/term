@@ -1,5 +1,6 @@
 import { controller } from "../MVC/Controller.js";
 import { kineticscroll } from '../etc/kineticscroll.js';
+import { model } from "./Model.js";
 
 // время закрытия окон сообщений / результатов
 var windowTimer;
@@ -846,6 +847,9 @@ export var view = {
             });
         });
 
+        let btn_pay_cart = document.getElementById('btn_pay_cart');
+        btn_pay_cart.addEventListener('click', (event) => controller.pay_cart(event));
+
         // touch
         setTimeout(() => {
             let target = document.querySelector(".cart_list > .cart_");
@@ -866,16 +870,21 @@ export var view = {
 
     calcTotalCart() {
 
-        let subtotal = 0, sales = 0, total = 0;
+        let quantity = 0, subtotal = 0, sales = 0, total = 0;
 
         cart = this.getCart();
         cart.forEach(el => {
             let price = +el.price;
             subtotal = subtotal + price;
+            quantity += 1;
         })
 
         sales = subtotal * 20 / 100;
         total = subtotal - sales;
+
+        // количество
+        let label0 = document.getElementById('quantity');
+        label0.innerHTML = new Intl.NumberFormat("ru", { style: "decimal" }).format(quantity);
 
         // итого
         let label1 = document.getElementById('subtotal');

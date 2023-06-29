@@ -614,6 +614,19 @@ export var controller = {
         }
     },
 
+    pay_cart(event) {
+
+        //let d = document.getElementById(event.target.id);
+        //console.log(d.innerHTML);
+
+        let myModal = new bootstrap.Modal(document.getElementById('paySystem'),
+            {
+                backdrop: 'static'
+            });
+        myModal.show();
+
+    }
+
 }
 
 

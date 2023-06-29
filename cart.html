@@ -64,7 +64,17 @@
                     <div class="row d-flex justify-content-center align-items-center">
                         <div class="col-11 mt-5">
 
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-between">
+
+                                <div class="col-lg-4 col-xl-3 mb-4">
+                                    <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                        <p class="mb-2">Количество (позиций)</p>
+                                        <p class="mb-2">
+                                            <span id="quantity">0</span>
+                                        </p>
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-4 col-xl-3 mb-4">
                                     <div class="d-flex justify-content-between" style="font-weight: 500;">
                                         <p class="mb-2">Итог</p>
@@ -90,16 +100,18 @@
                                     </div>
 
                                 </div>
+
                             </div>
 
                             <div class="card text-end">
                                 <div class="card-body">
-                                    <button type="button" class="btn btn-warning btn-block btn-lg">
+                                    <button type="button" class="btn btn-warning btn-block btn-lg" id="btn_pay_cart">
                                         <span>Оплатить</span>
                                         <span id="btn_total">0</span>
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -218,6 +230,60 @@
         </div>
 
     </div>
+
+    // new pay system component !!!
+    <div class="modal fade" id="paySystem" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content" style="background-color: rgb(114, 8, 8);">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal2Label" style="color: white;">-платежные системы-</h5>
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="text-center" style="font-size: 50px; color: white;" id="leftTime"></p>
+
+                    <div class="container mt-4 mb-4">
+                        <div class="col-12 text-center">
+
+                            <div class="container">
+                                <h1 style="color: white;">Форма оплаты заказа</h1>
+                                <form class="form cf">
+                                    <section class="payment-type cf">
+                                        <h2 style="color: white; margin-bottom: 30px;">Выберите тип оплаты:</h2>
+                                        <input type="radio" name="radio3" id="credit" value="credit" checked><label
+                                            class="credit-label four col" for="credit">QR код</label>
+                                        <input type="radio" name="radio3" id="debit" value="debit"><label
+                                            class="debit-label four col" for="debit">Банковская карта</label>
+                                        <input type="radio" name="radio3" id="paypal" value="paypal"><label
+                                            class="paypal-label four col" for="paypal">Лицевой счет</label>
+                                    </section>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button id="LogoutClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
+                        style="font-size: 2rem;">Выйти</button>
+
+                    <button id="LogoutNext" class="btn btn-outline-success" data-bs-dismiss="modal"
+                        style="font-size: 2rem;">Далее</button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
 
 </body>
 
