@@ -634,8 +634,8 @@ export var controller = {
 
             let user = controller.getClientFromLocalStorage();
             if (selected.value === 'qr') {
-                const qr = new QR();
-                qr.pay_inc_deposit(user.id, '0-5-5-0', 10); // для тестирования просто пополним через qr!
+                //const qr = new QR();
+                //qr.pay_inc_deposit(user.id, '0-5-5-0', 10); // для тестирования просто пополним через qr!
             }
             else {
                 console.log('еще не реализовано...');
