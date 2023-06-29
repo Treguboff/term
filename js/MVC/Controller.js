@@ -3,6 +3,9 @@ import { model } from '../MVC/Model.js';
 import { kineticscroll } from '../etc/kineticscroll.js';
 import { inactivityTime } from '../etc/inactivityTime.js'
 
+// библиотека оплат по qr
+import { QR } from '../logic/payment/qr.js'
+
 export var controller = {
     // Start pages
     //MENU
@@ -619,12 +622,28 @@ export var controller = {
         //let d = document.getElementById(event.target.id);
         //console.log(d.innerHTML);
 
-        let myModal = new bootstrap.Modal(document.getElementById('paySystem'),
-            {
-                backdrop: 'static'
-            });
-        myModal.show();
+        let myModal = new bootstrap.Modal(document.getElementById('paySystem'), { backdrop: 'static' });
 
+        let btn = document.getElementById('payment_cart');
+        btn.onclick = (ev) => {
+
+            //console.trace();
+            var radios = document.getElementsByName("radio3");
+            var selected = Array.from(radios).find(radio => radio.checked);
+            console.log(selected.value);
+
+            let user = controller.getClientFromLocalStorage();
+            if (selected.value === 'qr') {
+                const qr = new QR();
+                qr.pay_inc_deposit(user.id, '0-5-5-0', 10); // для тестирования просто пополним через qr!
+            }
+            else {
+                console.log('еще не реализовано...');
+
+            }
+
+        };
+        myModal.show();
     }
 
 }

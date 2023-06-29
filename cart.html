@@ -254,12 +254,12 @@
                                 <form class="form cf">
                                     <section class="payment-type cf">
                                         <h2 style="color: white; margin-bottom: 30px;">Выберите тип оплаты:</h2>
-                                        <input type="radio" name="radio3" id="credit" value="credit" checked><label
-                                            class="credit-label four col" for="credit">QR код</label>
+                                        <input type="radio" name="radio3" id="qr" value="qr" checked><label
+                                            class="qr-label four col" for="qr">QR код</label>
                                         <input type="radio" name="radio3" id="debit" value="debit"><label
                                             class="debit-label four col" for="debit">Банковская карта</label>
-                                        <input type="radio" name="radio3" id="paypal" value="paypal"><label
-                                            class="paypal-label four col" for="paypal">Лицевой счет</label>
+                                        <input type="radio" name="radio3" id="account" value="account"><label
+                                            class="account-label four col" for="account">Лицевой счет</label>
                                     </section>
                                 </form>
                             </div>
@@ -271,11 +271,12 @@
 
                 <div class="modal-footer">
 
-                    <button id="LogoutClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
-                        style="font-size: 2rem;">Выйти</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 2rem;">Закрыть</button>
 
-                    <button id="LogoutNext" class="btn btn-outline-success" data-bs-dismiss="modal"
-                        style="font-size: 2rem;">Далее</button>
+                    <button class="btn btn-warning" data-bs-dismiss="modal" style="font-size: 2rem;" id="payment_cart">
+                        <span>Оплатить</span>
+                        <span id="btn_total">350</span>
+                    </button>
 
                 </div>
 

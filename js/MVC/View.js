@@ -820,10 +820,9 @@ export var view = {
                     </div>
 
                     <div class="col-1 text-center">
-                        <a href="#!" class="text-danger btn_del"><i class="fas fa-trash fa-lg" id="${item.id}"></i></a>
+                        <a href="#!" class="text-danger btn_del p-3"><i class="fas fa-trash fa-lg" id="${item.id}"></i></a>
                     </div>
                     
-
                 </div>
             </div>
         </div>
@@ -848,7 +847,7 @@ export var view = {
         });
 
         let btn_pay_cart = document.getElementById('btn_pay_cart');
-        btn_pay_cart.addEventListener('click', (event) => controller.pay_cart(event));
+        btn_pay_cart.onclick = (event) => controller.pay_cart(event);
 
         // touch
         setTimeout(() => {
