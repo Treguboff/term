@@ -646,17 +646,19 @@ export var view = {
 
             const productHTML = `<div class="col-md-4 mb-3">
                             <div class="card mb-4" data-id="${item.serviceId}">
+                                <!--
                                 <a href="#">
                                     <img src="./img/shop/img_boxing.jpg" class="card-img-top" alt="Product">
-                                </a>                                
+                                </a>
+                                -->                                
                                 <div class="card-body text-center">
                                     <h4 class="item-title">${item.service}</h4>
                                     <p><small data-items-in-box class="text-muted">${item.group}</small></p>
     
                                     <div class="details-wrapper">
-    
                                         <div class="price">
-                                            <div class="price__currency">${item.price} ₽</div>
+                                            <span>₽</span>
+                                            <span class="price__currency">${item.price}</span>
                                         </div>
                                     </div>
     
@@ -761,7 +763,7 @@ export var view = {
                 // Собираем данные с этого товара и записываем их в единый объект productInfo
                 const productInfo = {
                     id: card.dataset.id,
-                    imgSrc: card.querySelector('.card-img-top').getAttribute('src'),
+                    //imgSrc: card.querySelector('.card-img-top').getAttribute('src'),
                     title: card.querySelector('.item-title').innerText,
                     itemsInBox: card.querySelector('[data-items-in-box]').innerText,
                     price: card.querySelector('.price__currency').innerText,
@@ -777,7 +779,8 @@ export var view = {
                     view.saveCart(cart);
 
                     // animation to cart
-                    let pic1 = card.querySelector('.card-img-top');
+                    //let pic1 = card.querySelector('.card-img-top');
+                    let pic1 = card.querySelector('.card-body');
                     let cart1 = document.querySelector('.basket');
                     view.move_to_cart(pic1, cart1);
 
@@ -802,6 +805,7 @@ export var view = {
             <div class="card-body p-4">
                 <div class="row d-flex justify-content-between align-items-center">
                    
+                    
                     <div class="col-2">
                         <img src="./img/shop/img_pilates.jpg" class="img-fluid rounded-3" alt="logo">
                     </div>
@@ -811,18 +815,22 @@ export var view = {
                     </div>
                     
                     <div class="col-2">
-                        <h5 class="mb-0">${item.price}</h5>
+                        <h5 class="mb-0">${item.price}<span>₽</span></h5>
                     </div>
 
                     <div class="col-1 text-center">
                         <a href="#!" class="text-danger btn_del"><i class="fas fa-trash fa-lg" id="${item.id}"></i></a>
                     </div>
+                    
 
                 </div>
             </div>
         </div>
         `;
         });
+
+        // calc
+        this.calcTotalCart();
 
         let btns = document.querySelectorAll('.btn_del');
         btns.forEach(item => {
@@ -838,21 +846,53 @@ export var view = {
             });
         });
 
+        // touch
+        setTimeout(() => {
+            let target = document.querySelector(".cart_list > .cart_");
+
+            let box = parseInt(getComputedStyle(target.parentNode).height, 10);
+            let list = parseInt(getComputedStyle(target).height, 10);
+
+            let indic = document.getElementById('indic');
+            indic.style = 'transform: translateY(0px)';
+            target.style = 'transform: translateY(0px)';
+            if (list > box) {
+                kineticscroll(target, { indicator: 'indic', snap: true });
+            }
+        }, 500);
+
+    },
+
+
+    calcTotalCart() {
+
+        let subtotal = 0, sales = 0, total = 0;
+
+        cart = this.getCart();
+        cart.forEach(el => {
+            let price = +el.price;
+            subtotal = subtotal + price;
+        })
+
+        sales = subtotal * 20 / 100;
+        total = subtotal - sales;
+
         // итого
         let label1 = document.getElementById('subtotal');
-        label1.innerHTML = "100";
+        label1.innerHTML = new Intl.NumberFormat("ru", { style: "currency", currency: "RUB" }).format(subtotal);
 
         // скидка
         let label2 = document.getElementById('sales');
-        label2.innerHTML = "20";
+        label2.innerHTML = new Intl.NumberFormat("ru", { style: "currency", currency: "RUB" }).format(sales);
 
         // всего
         let label3 = document.getElementById('total');
-        label3.innerHTML = "80";
+        label3.innerHTML = new Intl.NumberFormat("ru", { style: "currency", currency: "RUB" }).format(total);
 
         // всего на кнопке Оплатить
         let label4 = document.getElementById('btn_total');
-        label4.innerHTML = "80";
+        label4.innerHTML = new Intl.NumberFormat("ru", { style: "currency", currency: "RUB" }).format(total);
 
     },
+
 }

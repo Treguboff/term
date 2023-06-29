@@ -1,15 +1,18 @@
 /* Корзина */
 
-.cart-item__btn-dec-count {
-    margin-right: 10px;
-    cursor: pointer;
+.cart_list {
+    height: 700px;
+    background-color: beige;
+    border-radius: 13px;
+    overflow: hidden;
+    transform: scale(1);
 }
 
-.cart-item__btn-inc-count {
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-.cart-item__btn-remove {
-    cursor: pointer;
+#indic {
+    position: absolute;
+    left: 1px;
+    width: 10px;
+    height: 40px;
+    background-color: #ff3e00;
+    z-index: 1;
 }
