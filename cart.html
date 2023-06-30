@@ -143,10 +143,101 @@
 
     <script type="module" src="./js/logic/cart.js"></script>
 
+    <script src="./js/etc/qrcode.min.js"></script>
     <script src="./components/bootstrap-5.0.2-dist/js/bootstrap.bundle.js"></script>
     <script src="./js/app.js"></script>
 
     <!-- Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content" style="background-color: rgb(114, 8, 8);">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="color: white;">info</h5>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="container mt-4 mb-4"
+                        style="border: 2px solid black; border-radius:20px; background-color: beige; ">
+
+                        <div class="row mt-4 mb-4">
+                            <div class="col-12">
+                                <label class="form-label fs-2">Итого к оплате:</label>
+                                <div class="input-group mb-3">
+                                    <input id="total_pay" type="text" class="form-control fs-2"
+                                        placeholder="Сумма оплаты" readonly style="height: 100px;">
+                                    <span class="input-group-text fs-3">₽</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- qr -->
+                        <div id="m_qr" style="display: none;">
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col-6">
+                                    <div class="qr m-2">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="fs-3">* Запустите приложение банка</p>
+                                    <p class="fs-3">* Отсканируйте QR код</p>
+                                    <p class="fs-3">* Подтвердите платеж</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- bank -->
+                        <div id="m_card" style="display: none;">
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col-12">
+                                    <div class="circle my_center">
+                                        <img src="./img/pos-payment.png" style="height: 100px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col">
+                                    <div class="icons text-center mt-3 mb-3">
+                                        <i class="fas fa-angle-down fa-5x" style="color: black;"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- deposit -->
+                        <div id="m_deposit" style="display: none;">
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col">
+                                    <div class="icons text-center mt-3 mb-3">
+                                        <i class="fas fa-angle-down fa-5x" style="color: black;"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button id="paymentModalClose" type="button" class="btn btn-outline-warning" data-bs-dismiss="modal"
+                        style="font-size: 2rem;">Отменить оплату</button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <div class="modal fade" id="viewMsg" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true"
         data-backdrop="static" data-keyboard="false">
 
@@ -190,7 +281,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="FormViewMsgClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
-                        style="font-size: 2rem;">Закрыть</button>
+                        data-penguin-index="55" style="font-size: 2rem;">Закрыть</button>
                 </div>
             </div>
         </div>

@@ -4,9 +4,7 @@ import { kineticscroll } from '../etc/kineticscroll.js';
 import { inactivityTime } from '../etc/inactivityTime.js'
 
 // библиотека оплат по qr
-//import User from '../logic/payment/test.js'
-
-import PayQR from "../logic/payment/PayQR.js";
+import { App } from '../logic/payment/payQR2.js'
 
 export var controller = {
     // Start pages
@@ -637,11 +635,7 @@ export var controller = {
             let user = controller.getClientFromLocalStorage();
             if (selected.value === 'qr') {
 
-                //let u = new User('John');
-                //u.sayHi();
-
-                let pay = new PayQR();
-                pay.pay_inc_deposit(user.id, '0-5-5-0', 10);
+                App.pay_inc_deposit(user.id, '9-9-9-9', 10);
 
             }
             else {

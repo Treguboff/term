@@ -1,135 +1,171 @@
-export default class PayQR {
-    // время закрытия окон сообщений / результатов
-    #windowTimer
-    #secs
-
-    constructor() {
-        this.#windowTimer = '';
-        this.#secs = 10;
-    }
-
-    // public
-
-    // оплатить задолженность
-    pay_debt() {
-        this.#_test();
-    }
-
-    // оплатить пополнение депозита
-    async pay_inc_deposit(userId, depositId, amount) {
-        try {
-            r3r3
-
-            let data = {
-                user_id: userId,
-                deposit_id: depositId,
-                amount: amount
+var PayModel = function PayModel() { }
+PayModel.prototype.getLinkQR = async function getLinkQR(data) {
+    let promise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            let obj = {
+                result: true,
+                url_pay: "https://qr.nspk.ru/AD10000K2NIL3MTG886RG8K5691KFRR8?type=02&bank=100000000111&sum=1500&cur=RUB&crc=F38C",
+                order_1c: "dfdhh"
             };
+            resolve(obj);
+        }, 1000);
+    })
+    return await promise;
+}
 
-            // сформируем qr код
-            let res = await this.#_get_QR_inc_deposit(data);
 
-            console.log(res)
 
-            if (res.result) {
 
-                alert('link qr-code');
 
-            }
-            else {
-                // логирование
-                let _err = {
-                    'date': new Date(),
-                    'operation': 4, // deposit add qr pay
-                    'userId': userId,
-                    'flagErr': true,
-                    'amount': amount,
-                    'msg1': 'Ошибка при получении QR ссылки СБЕРБАНКа',
-                    'msg2': ''
-                };
-                this.#_renderMessageWindow();
-            }
-
+var PayView = function PayView() {
+    this.onClickClose = null;
+}
+PayView.prototype.render = function render(result, msg1, msg2) {
+    let myModal = new bootstrap.Modal(document.getElementById('viewMsg'),
+        {
+            backdrop: 'static'
         }
-        catch (err) {
-            this.#_renderMessageWindow(false, 'pay_inc_deposit', err);
-        }
+    );
+    if (result) {
+        let resS = document.getElementById("successMsg");
+        let resU = document.getElementById("unsuccessMsg");
+        resS.style.display = "block";
+        resU.style.display = "none";
+        document.getElementById('msg1s').innerText = msg1;
+        document.getElementById('msg2s').innerText = msg2;
     }
-
-    // оплатить корзину товаров - test!
-    pay_test() {
-
+    else {
+        let resS = document.getElementById("successMsg");
+        let resU = document.getElementById("unsuccessMsg");
+        resS.style.display = "none";
+        resU.style.display = "block";
+        document.getElementById('msg1u').innerText = msg1;
+        document.getElementById('msg2u').innerText = msg2;
     }
+    myModal.show();
 
-    // private
-    #_test() {
-        alert('тут Оплата по QR');
+    // дополнительно назначим выход в меню
+    let btn = document.getElementById('FormViewMsgClose');
+    btn.addEventListener('click', this.onClickClose);
+
+    return myModal;
+}
+
+PayView.prototype.renderQR = function renderQR(url_pay) {
+    let currentPage = document.querySelector('body').getAttribute('data-page');
+    let myModal = new bootstrap.Modal(document.getElementById('paymentModal'),
+        {
+            backdrop: 'static'
+        }
+    );
+    // сумма к оплате
+    if (currentPage === 'debt') {
+        document.getElementById("total_pay").value = document.getElementById("total_amount").innerHTML;
     }
-
-    async #_get_QR_inc_deposit(data) {
-        if (isTest) {
-            let promise = new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    let obj = {
-                        result: true,
-                        url_pay: "https://qr.nspk.ru/AD10000K2NIL3MTG886RG8K5691KFRR8?type=02&bank=100000000111&sum=1500&cur=RUB&crc=F38C",
-                        order_1c: "dfdhh"
-                    };
-                    resolve(obj);
-                }, 1000);
-            })
-            return await promise;
-        }
-        else {
-            let r = await SendData('QR_inc_deposit', data, 1);
-            let res = await JSON.parse(r);
-            return res;
-        }
+    else if (currentPage === 'deposit') {
+        document.getElementById("total_pay").value = document.getElementById("demoA").value;
     }
+    // способ оплаты
+    let pay_method1 = document.getElementById("m_qr");
+    let pay_method2 = document.getElementById("m_card");
+    let pay_method3 = document.getElementById("m_deposit");
 
-    #_tick() {
-        if (this.#secs <= 0) {
-            clearInterval(this.#windowTimer);
-            window.location.href = 'index.html';
-        }
-        else {
-            document.getElementById('msgTimer').innerText = 'До выхода осталось ' + (--this.#secs) + ' секунд';
-        }
+    let qr_code = document.querySelector(".qr");
+    qr_code.innerHTML = "";
+    const size = 300;
+    new QRCode(qr_code, {
+        text: url_pay,
+        width: size,
+        height: size,
+        colorDark: "#232323",
+        colorLight: "#eaedf3"
+    });
+    pay_method1.style.display = 'block';
+    pay_method2.style.display = 'none';
+    pay_method3.style.display = 'none';
+
+    myModal.show();
+    return myModal;
+}
+
+
+
+
+
+var PayController = function PayController(payView, payModel) {
+    this.payView = payView;
+    this.payModel = payModel;
+    // окно результата
+    this.secs = 10;
+    this.windowTimer = 0;
+    this.formMsg = null;
+}
+
+PayController.prototype.initialize = function initialize() {
+    // не особо постиг ЭТО
+    this.payView.onClickClose = this.onClickClose.bind(this);
+}
+
+PayController.prototype.onClickClose = function onClickClose(e) {
+
+    // окно и так закрывается
+    //this.formMsg.hide();
+
+    var target = e.currentTarget;
+    var index = parseInt(target.dataset.penguinIndex, 10); // считывание данных при клике
+
+    console.log(index);
+
+    /*
+        this.penguinModel.getPenguin(index, this.showPenguin.bind(this));
+*/
+
+    clearInterval(this.windowTimer);
+    window.location.href = 'index.html';
+};
+
+PayController.prototype.showMessage = function showMessage(result, msg1, msg2) {
+    // вызываем открытие окна сообщения
+    this.formMsg = this.payView.render(result, msg1, msg2);
+    // запускаем таймер автозакрытия окна
+    this.windowTimer = setInterval(() => this._tick(), 1000);
+}
+
+PayController.prototype._tick = function _tick() {
+    if (this.secs <= 0) {
+        clearInterval(this.windowTimer);
+        this.formMsg.hide();
+        //window.location.href = 'index.html';
     }
-
-    #_renderMessageWindow(result, msg1, msg2) {
-        let myModal = new bootstrap.Modal(document.getElementById('viewMsg'),
-            {
-                backdrop: 'static'
-            }
-        );
-        if (result) {
-            let resS = document.getElementById("successMsg");
-            let resU = document.getElementById("unsuccessMsg");
-            resS.style.display = "block";
-            resU.style.display = "none";
-            document.getElementById('msg1s').innerText = msg1;
-            document.getElementById('msg2s').innerText = msg2;
-        }
-        else {
-            let resS = document.getElementById("successMsg");
-            let resU = document.getElementById("unsuccessMsg");
-            resS.style.display = "none";
-            resU.style.display = "block";
-            document.getElementById('msg1u').innerText = msg1;
-            document.getElementById('msg2u').innerText = msg2;
-        }
-        myModal.show();
-
-        // запускаем таймер автозакрытия окна
-        this.#windowTimer = setInterval(() => this.#_tick(), 1000);
-
-        // дополнительно назначим выход в меню
-        let btn = document.getElementById('FormViewMsgClose');
-        btn.addEventListener('click', () => {
-            clearInterval(this.windowTimer);
-            window.location.href = 'index.html'
-        });
-        return myModal;
+    else {
+        document.getElementById('msgTimer').innerText = 'До выхода осталось ' + (--this.secs) + ' секунд';
     }
 }
+
+PayController.prototype.pay_inc_deposit = async function pay_inc_deposit(userId, depositId, amount) {
+    try {
+        let data = {
+            user_id: userId,
+            deposit_id: depositId,
+            amount: amount
+        };
+        // сформируем qr код
+        let res = await this.payModel.getLinkQR(data);
+        if (res.result) {
+
+            let formQR = this.payView.renderQR(res.url_pay);
+
+        }
+        else {
+            this.showMessage(false, 'не удалось получить QR код', res.error);
+        }
+    }
+    catch (err) {
+        this.showMessage(false, 'pay_inc_deposit', err);
+    }
+}
+
+var payModel = new PayModel();
+var payView = new PayView();
+
+export var App = new PayController(payView, payModel);

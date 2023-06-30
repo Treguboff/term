@@ -10,12 +10,6 @@ export class QR {
     }
 
     // public
-
-    // оплатить задолженность
-    pay_debt() {
-        this.#_test();
-    }
-
     // оплатить пополнение депозита
     async pay_inc_deposit(userId, depositId, amount) {
         try {
@@ -55,16 +49,6 @@ export class QR {
         catch (err) {
             this.#_renderMessageWindow(false, 'pay_inc_deposit', err);
         }
-    }
-
-    // оплатить корзину товаров - test!
-    pay_test() {
-
-    }
-
-    // private
-    #_test() {
-        alert('тут Оплата по QR');
     }
 
     async #_get_QR_inc_deposit(data) {
