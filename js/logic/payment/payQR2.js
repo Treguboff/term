@@ -12,17 +12,76 @@ class PayModel {
             }, 1000);
         });
         return await promise;
+
     }
+
+    async getPayStatusQR(order_1c, signal) {
+        return await new Promise((resolve, reject) => {
+            if (signal.aborted) {
+                return reject(new DOMException('Operation aborted', 'AbortError'))
+            }
+            signal.addEventListener('abort', () => {
+                reject(new DOMException('Operation aborted', 'AbortError'))
+            })
+            setTimeout(async () => {
+                // получаем статус оплаты из Банка
+                let res_ = await model._API_pay_QR_callback(order_1c);
+                resolve(res_);
+            }, 1000)
+        })
+            .then((value) => {
+                //console.log('Promise resolved')
+                return value;
+            })
+            .catch(error => {
+                if (error.name === 'AbortError') {
+                    //console.log('Promise aborted');
+                    return { result: false, error: 'Promise aborted' }
+
+                } else {
+                    //console.error('Promise failed:', error);
+                    return { result: false, error: error }
+                }
+            });
+    }
+
+    async _API_pay_QR_callback(order_1c) {
+        if (isTest) {
+            let promise = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    let res_ = {
+                        result: true,
+                        error: '',
+                        //result: false,                        
+                        //error: 'срок ссылки QR истек.'
+                    };
+                    // переведёт промис в состояние fulfilled с результатом "result"
+                    resolve(res_);
+                }, 5000);
+            });
+            return await promise;
+        }
+        else {
+            let r_pay = await SendData('API_pay_QR_callback', order_1c, 1);
+            let res_ = await JSON.parse(r_pay);
+            return res_;
+        }
+    }
+
+
 }
 
 class PayView {
     constructor() {
-        this.secs = 10;
-        this.windowTimer = 0;
+        this.timerMessage = 0;
+        this.secsMessage = 10;
+        this.timerPayment = 0;
+        this.secsPayment = 10;
+
     }
+
     renderformMessage(result, msg1, msg2) {
-        this.secs = 10;
-        this.windowTimer = 0;
+        this.secsMessage = 10;
         let myModal = new bootstrap.Modal(document.getElementById('viewMsg'),
             {
                 backdrop: 'static'
@@ -46,16 +105,16 @@ class PayView {
         }
 
         // запускаем таймер автозакрытия окна
-        this.windowTimer = setInterval(() => this._tick(myModal), 1000);
+        this.timerMessage = setInterval(() => this._tickMessage(myModal), 1000);
         myModal.show();
 
         // дополнительно назначим выход в меню
         let btn = document.getElementById('btnFormMessageClose');
         btn.addEventListener('click', this.onClickClose);
     }
+
     renderformPayQR(url_pay) {
-        this.secs = 10;
-        this.windowTimer = 0;
+        this.secsPayment = 10;
         let currentPage = document.querySelector('body').getAttribute('data-page');
         let myModal = new bootstrap.Modal(document.getElementById('paymentModal'),
             {
@@ -89,23 +148,39 @@ class PayView {
         pay_method3.style.display = 'none';
 
         // запускаем таймер автозакрытия окна
-        this.windowTimer = setInterval(() => this._tick(myModal), 1000);
+        this.timerPayment = setInterval(() => this._tickPayment(myModal), 1000);
+
         myModal.show();
 
         // дополнительно назначим выход в меню
         let btn = document.getElementById('btnFormPaymentClose');
         btn.addEventListener('click', this.onClickClose);
+
+        return myModal;
     }
-    _tick(form) {
-        if (this.secs <= 0) {
-            clearInterval(this.windowTimer);
+
+    _tickMessage(form) {
+        if (this.secsMessage <= 0) {
+            clearInterval(this.timerMessage);
             form.hide();
             //window.location.href = 'index.html';
         }
         else {
-            form._element.querySelector('.msgTimer').innerHTML = 'До выхода осталось ' + (--this.secs) + ' секунд';
+            form._element.querySelector('.msgTimer').innerHTML = 'До выхода осталось ' + (--this.secsMessage) + ' секунд';
         }
     }
+
+    _tickPayment(form) {
+        if (this.secsPayment <= 0) {
+            clearInterval(this.timerPayment);
+            form.hide();
+            //window.location.href = 'index.html';
+        }
+        else {
+            form._element.querySelector('.msgTimer').innerHTML = 'До выхода осталось ' + (--this.secsPayment) + ' секунд';
+        }
+    }
+
     onClickClose(e) {
         // окно и так закрывается
         //this.formMsg.hide();
@@ -125,6 +200,7 @@ class PayController {
     constructor(payView, payModel) {
         this.payView = payView;
         this.payModel = payModel;
+        this.allWindows = [];
     }
     showMessage(result, msg1, msg2) {
         this.payView.renderformMessage(result, msg1, msg2);
@@ -138,14 +214,27 @@ class PayController {
             };
             // сформируем qr код
             let res = await this.payModel.getLinkQR(data);
+
             if (res.result) {
-                this.payView.renderformPayQR(res.url_pay);
+                // отобразим QR код для оплаты
+                let form1 = this.payView.renderformPayQR(res.url_pay);
+                this.allWindows.push(form1);
+
+
+                // начинаем ожидание статуса оплаты
+                model
+                let resStatusQR = await model.get_QR_pay_status(res.order_1c, signal);
+                console.log(resStatusQR);
+
+
             }
             else {
                 this.showMessage(false, 'не удалось получить QR код', res.error);
             }
         }
         catch (err) {
+            // необходимо закрыть все открытые окна и таймеры ранее!
+            console.log(this.allWindows);
             this.showMessage(false, 'pay_inc_deposit', err);
         }
     }
