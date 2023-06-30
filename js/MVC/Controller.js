@@ -4,7 +4,7 @@ import { kineticscroll } from '../etc/kineticscroll.js';
 import { inactivityTime } from '../etc/inactivityTime.js'
 
 // библиотека оплат по qr
-import { QR } from '../logic/payment/qr.js'
+import User from '../logic/payment/test.js'
 
 export var controller = {
     // Start pages
@@ -636,6 +636,8 @@ export var controller = {
             if (selected.value === 'qr') {
                 //const qr = new QR();
                 //qr.pay_inc_deposit(user.id, '0-5-5-0', 10); // для тестирования просто пополним через qr!
+                let u = new User('John');
+                u.sayHi();
             }
             else {
                 console.log('еще не реализовано...');
