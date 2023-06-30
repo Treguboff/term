@@ -155,6 +155,7 @@
             <div class="modal-content" style="background-color: rgb(114, 8, 8);">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel" style="color: white;">info</h5>
+                    <span class="fs-2 msgTimer" style="color: white;"></span>
                 </div>
                 <div class="modal-body">
 
@@ -229,8 +230,9 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button id="paymentModalClose" type="button" class="btn btn-outline-warning" data-bs-dismiss="modal"
-                        style="font-size: 2rem;">Отменить оплату</button>
+                    <button id="btnFormPaymentClose" type="button" class="btn btn-outline-warning"
+                        data-bs-dismiss="modal" data-fitness-index="Отменить оплату" style="font-size: 2rem;">Отменить
+                        оплату</button>
 
                 </div>
             </div>
@@ -245,7 +247,7 @@
             <div class="modal-content" style="background-color: rgb(114, 8, 8);">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModal2Label" style="color: white;">info</h5>
-                    <span class="fs-2" style="color: white;" id="msgTimer"></span>
+                    <span class="fs-2 msgTimer" style="color: white;"></span>
                 </div>
                 <div class="modal-body">
 
@@ -280,8 +282,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button id="FormViewMsgClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
-                        data-penguin-index="55" style="font-size: 2rem;">Закрыть</button>
+                    <button id="btnFormMessageClose" class="btn btn-outline-warning" data-bs-dismiss="modal"
+                        data-fitness-index="Закрыть сообщение" style="font-size: 2rem;">Закрыть</button>
                 </div>
             </div>
         </div>
@@ -366,7 +368,7 @@
 
                     <button class="btn btn-warning" data-bs-dismiss="modal" style="font-size: 2rem;" id="payment_cart">
                         <span>Оплатить</span>
-                        <span id="btn_total">350</span>
+                        <span id="btn_total"></span>
                     </button>
 
                 </div>
@@ -375,7 +377,6 @@
         </div>
 
     </div>
-
 
 </body>
 

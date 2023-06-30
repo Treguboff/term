@@ -17,9 +17,12 @@ class PayModel {
 
 class PayView {
     constructor() {
-        this.onClickClose = null;
+        this.secs = 10;
+        this.windowTimer = 0;
     }
-    render(result, msg1, msg2) {
+    renderformMessage(result, msg1, msg2) {
+        this.secs = 10;
+        this.windowTimer = 0;
         let myModal = new bootstrap.Modal(document.getElementById('viewMsg'),
             {
                 backdrop: 'static'
@@ -41,15 +44,18 @@ class PayView {
             document.getElementById('msg1u').innerText = msg1;
             document.getElementById('msg2u').innerText = msg2;
         }
+
+        // запускаем таймер автозакрытия окна
+        this.windowTimer = setInterval(() => this._tick(myModal), 1000);
         myModal.show();
 
         // дополнительно назначим выход в меню
-        let btn = document.getElementById('FormViewMsgClose');
+        let btn = document.getElementById('btnFormMessageClose');
         btn.addEventListener('click', this.onClickClose);
-
-        return myModal;
     }
-    renderQR(url_pay) {
+    renderformPayQR(url_pay) {
+        this.secs = 10;
+        this.windowTimer = 0;
         let currentPage = document.querySelector('body').getAttribute('data-page');
         let myModal = new bootstrap.Modal(document.getElementById('paymentModal'),
             {
@@ -82,8 +88,36 @@ class PayView {
         pay_method2.style.display = 'none';
         pay_method3.style.display = 'none';
 
+        // запускаем таймер автозакрытия окна
+        this.windowTimer = setInterval(() => this._tick(myModal), 1000);
         myModal.show();
-        return myModal;
+
+        // дополнительно назначим выход в меню
+        let btn = document.getElementById('btnFormPaymentClose');
+        btn.addEventListener('click', this.onClickClose);
+    }
+    _tick(form) {
+        if (this.secs <= 0) {
+            clearInterval(this.windowTimer);
+            form.hide();
+            //window.location.href = 'index.html';
+        }
+        else {
+            form._element.querySelector('.msgTimer').innerHTML = 'До выхода осталось ' + (--this.secs) + ' секунд';
+        }
+    }
+    onClickClose(e) {
+        // окно и так закрывается
+        //this.formMsg.hide();
+        var target = e.currentTarget;
+        //var index = parseInt(target.dataset.fitnessIndex, 10); // считывание данных при клике
+        var index = target.dataset.fitnessIndex;
+        console.log(index);
+        /*
+            this.penguinModel.getPenguin(index, this.showPenguin.bind(this));
+        */
+        clearInterval(this.windowTimer);
+        //window.location.href = 'index.html';
     }
 }
 
@@ -91,45 +125,9 @@ class PayController {
     constructor(payView, payModel) {
         this.payView = payView;
         this.payModel = payModel;
-        // окно результата
-        this.secs = 10;
-        this.windowTimer = 0;
-        this.formMsg = null;
-    }
-    initialize() {
-        // не особо постиг ЭТО
-        this.payView.onClickClose = this.onClickClose.bind(this);
-    }
-    onClickClose(e) {
-        // окно и так закрывается
-        //this.formMsg.hide();
-
-        var target = e.currentTarget;
-        var index = parseInt(target.dataset.penguinIndex, 10); // считывание данных при клике
-
-        console.log(index);
-
-        /*
-            this.penguinModel.getPenguin(index, this.showPenguin.bind(this));
-    */
-        clearInterval(this.windowTimer);
-        window.location.href = 'index.html';
     }
     showMessage(result, msg1, msg2) {
-        // вызываем открытие окна сообщения
-        this.formMsg = this.payView.render(result, msg1, msg2);
-        // запускаем таймер автозакрытия окна
-        this.windowTimer = setInterval(() => this._tick(), 1000);
-    }
-    _tick() {
-        if (this.secs <= 0) {
-            clearInterval(this.windowTimer);
-            this.formMsg.hide();
-            //window.location.href = 'index.html';
-        }
-        else {
-            document.getElementById('msgTimer').innerText = 'До выхода осталось ' + (--this.secs) + ' секунд';
-        }
+        this.payView.renderformMessage(result, msg1, msg2);
     }
     async pay_inc_deposit(userId, depositId, amount) {
         try {
@@ -141,9 +139,7 @@ class PayController {
             // сформируем qr код
             let res = await this.payModel.getLinkQR(data);
             if (res.result) {
-
-                let formQR = this.payView.renderQR(res.url_pay);
-
+                this.payView.renderformPayQR(res.url_pay);
             }
             else {
                 this.showMessage(false, 'не удалось получить QR код', res.error);
@@ -157,5 +153,4 @@ class PayController {
 
 var payModel = new PayModel();
 var payView = new PayView();
-
 export var App = new PayController(payView, payModel);
