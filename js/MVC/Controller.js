@@ -627,6 +627,8 @@ export var controller = {
         let btn = document.getElementById('payment_cart');
         btn.onclick = (ev) => {
 
+            let paySum = document.getElementById('btn_pay_cart').value;
+
             //console.trace();
             var radios = document.getElementsByName("radio3");
             var selected = Array.from(radios).find(radio => radio.checked);
@@ -634,9 +636,7 @@ export var controller = {
 
             let user = controller.getClientFromLocalStorage();
             if (selected.value === 'qr') {
-
-                App.pay_inc_deposit(user.id, '9-9-9-9', 10);
-
+                App.pay_inc_deposit(user.id, '9-9-9-9', paySum);
             }
             else {
                 console.log('еще не реализовано...');

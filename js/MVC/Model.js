@@ -2388,7 +2388,6 @@ export var model = {
     },
 
     async get_QR_pay_calcel(order_1c) {
-
         if (isTest) {
             let promise = new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -2406,7 +2405,6 @@ export var model = {
             let res = await JSON.parse(r);
             return res;
         }
-
     },
 
     // POS-terminal

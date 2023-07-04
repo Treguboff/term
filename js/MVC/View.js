@@ -901,6 +901,9 @@ export var view = {
         let label4 = document.getElementById('btn_total');
         label4.innerHTML = new Intl.NumberFormat("ru", { style: "currency", currency: "RUB" }).format(total);
 
+        let btn_value = document.getElementById('btn_pay_cart');
+        btn_value.value = total;
+
     },
 
 }
