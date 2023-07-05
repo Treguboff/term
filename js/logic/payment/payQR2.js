@@ -180,9 +180,9 @@ class PayController {
                     form: form,
                     formId: formId,
                     timer: setInterval(() => this._tick(formId), 1000),
-                    secs: 120,
+                    secs: 10,
                     //
-                    fn: this.btn_calcel
+                    fn: () => { this.btn_calcel(res.order_1c) }
                 });
 
                 // дополнительно назначим выход в меню
@@ -275,6 +275,7 @@ class PayController {
     }
 
     async pay_calcel(order_1c) {
+        console.log('Отмена ссылки QR');
         if (isTest) {
             let promise = new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -345,8 +346,10 @@ class PayController {
                 let formIndex = this.allForm.indexOf(s);
                 this.allForm.splice(formIndex, 1);
 
-                //console.log(s.fn)
-
+                // если определена функция выхода
+                if (s.fn) {
+                    s.fn();
+                }
 
                 //window.location.href = 'index.html';
             }

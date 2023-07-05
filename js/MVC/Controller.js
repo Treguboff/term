@@ -1,7 +1,7 @@
 import { view } from "../MVC/View.js";
 import { model } from '../MVC/Model.js';
 import { kineticscroll } from '../etc/kineticscroll.js';
-import { inactivityTime } from '../etc/inactivityTime.js'
+//import { inactivityTime } from '../etc/inactivityTime.js'
 
 // библиотека оплат по qr
 import { App } from '../logic/payment/payQR2.js'
@@ -12,7 +12,7 @@ export var controller = {
     async menu_init() {
 
         // обработчик ожидания
-        inactivityTime();
+        //inactivityTime();
 
         let objClient = controller.getClientFromLocalStorage();
         try {
@@ -56,7 +56,7 @@ export var controller = {
     async debt_init() {
 
         // обработчик ожидания
-        inactivityTime();
+        //inactivityTime();
 
         let objClient = controller.getClientFromLocalStorage();
         try {
@@ -96,7 +96,7 @@ export var controller = {
         let objClient = controller.getClientFromLocalStorage();
         try {
             // обработчик ожидания
-            inactivityTime();
+            //inactivityTime();
 
             // получить тек лицевой счет
             let data = controller.getDepositFromLocalStorage();
@@ -125,7 +125,7 @@ export var controller = {
     // SHOP
     async catalog_init() {
         // обработчик ожидания
-        inactivityTime();
+        //inactivityTime();
         let objClient = controller.getClientFromLocalStorage();
         try {
             let objCatalog = await model.getCatalog();
@@ -150,7 +150,7 @@ export var controller = {
     // CART Корзина товаров для финальной оплаты
     async cart_init() {
         // обработчик ожидания
-        inactivityTime();
+        //inactivityTime();
         let objClient = controller.getClientFromLocalStorage();
         try {
             view.render_CartPage();

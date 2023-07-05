@@ -1,4 +1,4 @@
-export function inactivityTime() {
+export function inactivityTime_fix() {
 
     // время допустимого бездействия пользователя (sec)
     var userTime = 120; //2 min - operation qr pay
